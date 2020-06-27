@@ -1,0 +1,52 @@
+---
+- name: check for installation of helm
+  become: yes
+  stat:
+    path: '{{ kubernetes_helm_install_dir }}'
+  changed_when: false
+  register: kubernetes_helm_binary_dir
+
+- when: not kubernetes_helm_binary_dir.stat.exists
+  block:
+    - name: download...
+      become: yes
+      become_user: root
+      get_url:
+        url: '{{ kubernetes_helm_url }}'
+        dest: /tmp/{{ kubernetes_helm_archive }}
+        checksum: '{{ kubernetes_helm_checksum }}'
+        mode: 0644
+
+    - name: make install dir
+      become: yes
+      become_user: root
+      file:
+        path: '{{ kubernetes_helm_install_dir }}'
+        state: directory
+        mode: 0755
+
+    - name: unarchive
+      become: yes
+      become_user: root
+      unarchive:
+        copy: no
+        src: /tmp/{{ kubernetes_helm_archive }}
+        dest: '{{ kubernetes_helm_install_dir }}'
+        creates: '{{ kubernetes_helm_install_dir }}/{{ kubernetes_helm_platform }}'
+  always:
+    - name: cleanup...
+      become: yes
+      become_user: root
+      file:
+        path: /tmp/{{ kubernetes_helm_archive }}
+        state: absent
+
+- name: link
+  become: yes
+  become_user: root
+  with_items:
+    - helm
+  file:
+    src: '{{ kubernetes_helm_install_dir }}/{{ kubernetes_helm_platform }}/{{ item }}'
+    dest: '{{ kubernetes_helm_bin_dir }}/{{ item }}'
+    state: link
