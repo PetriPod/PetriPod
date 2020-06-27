@@ -1,1 +1,2 @@
-.DS_Store
+# Ignore all files named .DS_Store
+**/.DS_Store
