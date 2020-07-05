@@ -55,7 +55,7 @@ spec:
       serviceAccountName: traefik-ingress-controller
       containers:
         - name: traefik
-          image: traefik:v2.0
+          image: traefik:v2.2
           args:
             # All arguments here:
             # https://docs.traefik.io/v2.0/reference/static-configuration/cli/
@@ -64,7 +64,12 @@ spec:
             - --accesslog
             - --entrypoints.web.Address=:80
             - --entrypoints.websecure.Address=:443
+            # Permanent redirecting of all requests on http (80) to https (443)
+            #- --entrypoints.web.http.redirections.entryPoint.to=websecure
+            #- --entrypoints.websecure.http.tls.certResolver=default
+            # Where to get ingress information from
             - --providers.kubernetescrd
+            - --providers.kubernetesingress
             # Select the challenge method: DNS, HTTP, TLS
             #- --certificatesresolvers.default.acme.dnschallenge
             #- --certificatesresolvers.default.acme.httpchallenge
