@@ -57,17 +57,26 @@ spec:
         - name: traefik
           image: traefik:v2.0
           args:
+            # All arguments here:
+            # https://docs.traefik.io/v2.0/reference/static-configuration/cli/
+            - --global.sendanonymoususage=false
             - --api.insecure
             - --accesslog
             - --entrypoints.web.Address=:80
             - --entrypoints.websecure.Address=:443
             - --providers.kubernetescrd
+            # Select the challenge method: DNS, HTTP, TLS
+            #- --certificatesresolvers.default.acme.dnschallenge
+            #- --certificatesresolvers.default.acme.httpchallenge
+            #- --certificatesresolvers.<name>.acme.httpchallenge.entrypoint=web
             - --certificatesresolvers.default.acme.tlschallenge
             - --certificatesresolvers.default.acme.email={{ACME_EMAIL}}
             - --certificatesresolvers.default.acme.storage=acme.json
             # Please note that this is the staging Let's Encrypt server.
             # Once you get things working, you should remove that whole line altogether.
             - --certificatesresolvers.default.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+            # Metrics
+            #- --metrics.prometheus
           ports:
             - name: web
               containerPort: 80
