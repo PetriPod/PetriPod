@@ -1,0 +1,52 @@
+# File: 03-traefik.persistentvolumeclaim.yaml
+# Kubernetes reference: https://kubernetes.io/docs/concepts/storage/persistent-volumes/
+
+# Declare a persistent volume, mounted on a path
+# Make sure this path exists. The volume can
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: local-data-volume
+  labels:
+    type: local
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "{{DATA_VOLUME}}"
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: traefik-acme-storage
+  namespace: kube-system
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Mi
+---
+
+#---
+#apiVersion: v1
+#kind: PersistentVolumeClaim
+#metadata:
+#  labels:
+#    component: "server"
+#    app: traefik
+#  name: traefik-acme-storage
+#  namespace: kube-system
+#spec:
+#  accessModes:
+#    - ReadWriteOnce
+#
+#  resources:
+#    requests:
+#      storage: "100Mi"

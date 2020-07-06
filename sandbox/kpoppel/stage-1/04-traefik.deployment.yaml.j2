@@ -64,24 +64,27 @@ spec:
             - --accesslog
             - --entrypoints.web.Address=:80
             - --entrypoints.websecure.Address=:443
+            - --entryPoints.websecure.http.tls
+            - --entrypoints.websecure.http.tls.certResolver=default
             # Permanent redirecting of all requests on http (80) to https (443)
             #- --entrypoints.web.http.redirections.entryPoint.to=websecure
-            #- --entrypoints.websecure.http.tls.certResolver=default
             # Where to get ingress information from
             - --providers.kubernetescrd
             - --providers.kubernetesingress
             # Select the challenge method: DNS, HTTP, TLS
             #- --certificatesresolvers.default.acme.dnschallenge
             #- --certificatesresolvers.default.acme.httpchallenge
-            #- --certificatesresolvers.<name>.acme.httpchallenge.entrypoint=web
+            #- --certificatesresolvers.default.acme.httpchallenge.entrypoint=web
             - --certificatesresolvers.default.acme.tlschallenge
             - --certificatesresolvers.default.acme.email={{ACME_EMAIL}}
-            - --certificatesresolvers.default.acme.storage=acme.json
+            - --certificatesresolvers.default.acme.storage=/data/acme.json
             # Please note that this is the staging Let's Encrypt server.
             # Once you get things working, you should remove that whole line altogether.
             - --certificatesresolvers.default.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
-            # Metrics
+            # Prometheus metrics
+            #- --entrypoints.metrics.address=:8888
             #- --metrics.prometheus
+            #- --metrics.prometheus.entryPoint=metrics
           ports:
             - name: web
               containerPort: 80
@@ -89,3 +92,13 @@ spec:
               containerPort: 443
             - name: admin
               containerPort: 8080
+          # Mount a data volume for the ACME certificate data
+          # The PersistentVolume and PersistentVolumeClaim is created from another yaml file.
+          volumeMounts:
+            - name: local-data-volume
+              mountPath: /data
+              subPath: ""
+      volumes:
+        - name: local-data-volume
+          persistentVolumeClaim:
+            claimName: traefik-acme-storage

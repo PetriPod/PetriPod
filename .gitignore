@@ -1,2 +1,9 @@
 # Ignore all files named .DS_Store
 **/.DS_Store
+sandbox/kpoppel/basic_auth_credentials
+sandbox/kpoppel/config_data
+sandbox/kpoppel/stage-1/03-traefik.persistentvolumeclaim.yaml
+sandbox/kpoppel/stage-1/04-traefik.deployment.yaml
+sandbox/kpoppel/stage-1/05-traefik-admin.basic_auth.ingressroute.yaml
+sandbox/kpoppel/stage-1/11-whoami.ingressroute.yaml
+sandbox/kpoppel/stage-2/11-portainer-k8s-beta.ingressroute.yaml
