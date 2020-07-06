@@ -1,5 +1,4 @@
 ---
-
 - name: Copy K3s service file
   register: k3s_service
   template:

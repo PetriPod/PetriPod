@@ -1,0 +1,31 @@
+---
+- name: Install Traefik via helm chart
+  shell: >
+    helm install \
+    --namespace=kube-system \
+    --set providers.redis.endpoints=redis.database.svc.cluster.local:6379 \
+    --set providers.redis.password=use_a_secret \
+    --set persistence.enabled=true \
+    traefik \
+    traefik/traefik --kubeconfig /etc/rancher/k3s/k3s.yaml
+  ignore_errors: yes
+
+- name: Expose Traefik Dashboard
+  k8s:
+    state: present
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+    definition:
+      apiVersion: traefik.containo.us/v1alpha1
+      kind: IngressRoute
+      metadata:
+        namespace: kube-system
+        name: traefik-dashboard
+      spec:
+        entryPoints:
+          - webSecure
+        routes:
+          - match: Host(`traefik.tardis.k3s`) && (PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+            kind: Rule
+            services:
+              - name: api@internal
+                kind: TraefikService

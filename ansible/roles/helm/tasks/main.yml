@@ -1,0 +1,18 @@
+---
+
+- name: Add Helm Stable Repos
+  shell: > 
+    helm repo add stable https://kubernetes-charts.storage.googleapis.com/ --kubeconfig /etc/rancher/k3s/k3s.yaml
+
+- name: Add Helm Stable Repos
+  shell: > 
+    helm repo add traefik https://containous.github.io/traefik-helm-chart --kubeconfig /etc/rancher/k3s/k3s.yaml
+
+- name: Add Redis Repos
+  shell: >
+    helm repo add bitnami https://charts.bitnami.com/bitnami --kubeconfig /etc/rancher/k3s/k3s.yaml
+
+- name: Update Helm Repos
+  shell: >
+    helm repo update --kubeconfig /etc/rancher/k3s/k3s.yaml
+

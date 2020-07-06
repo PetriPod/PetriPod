@@ -15,6 +15,9 @@
   roles:
     - k3s/master
     - andrewrothstein.kubernetes-helm
+    - helm
+    - redis
+    - traefik2
 
 - hosts: node
   gather_facts: True

@@ -1,0 +1,22 @@
+---
+- name: Install Openshift library on Master/nodes
+  pip:
+    name: openshift
+
+- name: Create the database namespace
+  k8s:
+    name: database
+    kubeconfig: /etc/rancher/k3s/k3s.yaml
+    host: https://127.0.0.1:6443
+    api_version: v1
+    kind: namespace
+    state: present
+
+- name: Install Redis via Helm
+  shell: >
+    helm install redis \
+    --set password=use_a_secret \
+    --set cluster.enable=false \
+    --namespace=database \
+    bitnami/redis --kubeconfig /etc/rancher/k3s/k3s.yaml
+  ignore_errors: yes
