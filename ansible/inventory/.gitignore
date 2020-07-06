@@ -1,3 +1,6 @@
 *
 !.gitignore
 !sample/
+!sample/hosts.ini
+!sample/group_vars/
+!sample/group_vars/all.yml
