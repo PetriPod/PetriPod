@@ -8,7 +8,7 @@
   * [Architecture Design Working Doc](https://github.com/PetriPod/PetriPod/wiki/Architecture-Design---Working-Doc)
   * [Basics of Traefik 2 in Kubernetes](https://github.com/PetriPod/PetriPod/wiki/Basics-of-Traefik-2-in-Kubernetes)
   * [K3s with Metallb and Nginx Up and Running Stage 1](https://github.com/PetriPod/PetriPod/wiki/K3s-with-metallb-and-nginx---Up-and-running--stage-1)
-  * [K3s with Metallb and Nginx Up and Running Stage 1](https://github.com/PetriPod/PetriPod/wiki/K3s-with-metallb-and-nginx---Up-and-running-stage-2)
+  * [K3s with Metallb and Nginx Up and Running Stage 2](https://github.com/PetriPod/PetriPod/wiki/K3s-with-metallb-and-nginx---Up-and-running-stage-2)
   * [K3S with Traefik2 - stage 1](https://github.com/PetriPod/PetriPod/wiki/K3S-with-Traefik2---stage-1)
   * [Up and running extra notes and examples](https://github.com/PetriPod/PetriPod/wiki/Up-and-running---extra-notes-and-examples)
   * [Working Notes](https://github.com/PetriPod/PetriPod/wiki/Working-Notes)
