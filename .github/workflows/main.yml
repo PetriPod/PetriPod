@@ -1,0 +1,32 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  job-sync-wiki-to-docs:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'gollum'
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.NEWRELIC_BOT_TOKEN }} # allows us to push back to repo
+          ref: master
+      - name: Sync Wiki to Docs
+        uses: newrelic/wiki-sync-action@master
+        with:
+          source: wiki
+          destination: docs
+          token: ${{ secrets.publish_wiki }}
+          gitAuthorName: 'Auto wiki publisher'
+          gitAuthorEmail: 'kjp@codefriar.com'
+          branch: master # since default branch is develop in this example
+  
