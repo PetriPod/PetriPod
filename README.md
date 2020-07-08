@@ -1,6 +1,6 @@
 # PetriPod
 
-## Work In Progress
+Wiki publication status: ![CI](https://github.com/PetriPod/PetriPod/workflows/CI/badge.svg?branch=master&event=gollum)
 
 # Build a Kubernetes cluster using k3s via Ansible
 
