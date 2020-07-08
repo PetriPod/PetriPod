@@ -1,12 +1,3 @@
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: traefik-auth
-  namespace: kube-system
-spec:
-  basicAuth:
-    secret: traefik-admin
-
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -23,6 +14,6 @@ spec:
         - name: traefik
           port: 8080
       middlewares:
-        - name: traefik-auth
+        - name: system-secured
   tls:
     certResolver: default

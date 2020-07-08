@@ -1,0 +1,62 @@
+# File: 05-basic_auth.admin.middleware.yaml
+# This file defines middleware which uses a Kubernetes secret for use with accessing
+# system-base services.  Don't use this middleware with user-services, just for
+# some simple safety.  Instead define the exact same middlewares using a different secret.
+#
+# Inspired from: https://containo.us/blog/traefik-2-0-6531ec5196c2/
+#apiVersion: traefik.containo.us/v1alpha1
+#kind: Middleware
+#metadata:
+#  name: traefik-auth
+#  namespace: kube-system
+#spec:
+#  basicAuth:
+#    secret: traefik-admin
+
+# This stack of middlewares setup the following:
+#   Only https - http requests are redirected to https
+#   Allow list of IPs - here only localhost or LAN IPs
+#   Basic Authentication using the system-admin secret setup in Kubernetes
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: system-secured
+  namespace: kube-system
+spec:
+  chain:
+    middlewares:
+    - name: system-https-only
+    - name: system-known-ips
+    - name: system-auth-users
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: system-auth-users
+  namespace: kube-system
+spec:
+  basicAuth:
+    secret: system-admin
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: system-https-only
+  namespace: kube-system
+spec:
+  redirectScheme:
+    scheme: https
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: system-known-ips
+  namespace: kube-system
+spec:
+  ipWhiteList:
+    # Note with the IP ranges that Traefik will see requests coming from maybe 10.42.* - the Kubernetes internal network.
+    sourceRange:
+      - 192.168.1.0/24
+      - 127.0.0.1/32
+      - 10.0.0.0/8

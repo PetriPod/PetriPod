@@ -21,13 +21,13 @@ fi
 
 sed 's#{{DATA_VOLUME}}#'${data_volume}'#g' 03-traefik.persistentvolumeclaim.yaml.j2 > 03-traefik.persistentvolumeclaim.yaml
 sed 's/{{ACME_EMAIL}}/'${acme_email}'/g' 04-traefik.deployment.yaml.j2 > 04-traefik.deployment.yaml
-sed 's/{{DOMAIN}}/'${domain}'/g' 05-traefik-admin.basic_auth.ingressroute.yaml.j2 > 05-traefik-admin.basic_auth.ingressroute.yaml
+sed 's/{{DOMAIN}}/'${domain}'/g' 06-traefik-admin.basic_auth.ingressroute.yaml.j2 > 06-traefik-admin.basic_auth.ingressroute.yaml
 sed 's/{{DOMAIN}}/'${domain}'/g' 11-whoami.ingressroute.yaml.j2 > 11-whoami.ingressroute.yaml
 
 
 read -n1 -p "Press a key to deploy"
 htpasswd -b -c ../basic_auth_credentials $user $pass
-kubectl create secret generic traefik-admin --from-file ../basic_auth_credentials -n kube-system
+kubectl create secret generic system-admin --from-file ../basic_auth_credentials -n kube-system
 
 kubectl apply \
     -f 00-klipperlb.daemonset.yaml  \
@@ -35,7 +35,8 @@ kubectl apply \
     -f 02-traefik.clusterrole.yaml  \
     -f 03-traefik.persistentvolumeclaim.yaml   \
     -f 04-traefik.deployment.yaml   \
-    -f 05-traefik-admin.basic_auth.ingressroute.yaml  \
+    -f 05-basic_auth.admin.middleware.yaml  \
+    -f 06-traefik-admin.basic_auth.ingressroute.yaml  \
     -f 10-whoami.service.yaml       \
     -f 11-whoami.ingressroute.yaml
 
@@ -45,4 +46,4 @@ curl http://whoami.$domain/notls
 echo "#### Attempt whoami on https:"
 curl -k https://whoami.$domain/tls
 echo "#### Attempt Traefik dashboard using google-chrome browser:"
-google-chrome https://traefik.$domain
+google-chrome https://traefik.$domain/dashboard/
