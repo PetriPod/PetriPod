@@ -15,7 +15,7 @@ read -n1 -p "Press a key to continue"
 
 # Values came from this command:
 #helm show values portainer/portainer-beta > portainer.helm.values.yaml
-# The values file was then changed so tat it uses ClusterIP and the section of ingress was commented out in favour
+# The values file was then changed so that it uses ClusterIP and the section of ingress was commented out in favour
 # of using the portainer-ingressroute yaml file.
 kubectl create namespace portainer
 helm repo add portainer http://portainer.github.io/portainer-k8s

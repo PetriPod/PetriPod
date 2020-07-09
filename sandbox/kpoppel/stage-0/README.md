@@ -1,9 +1,11 @@
+Serviceside make sure you have curl and sudo.
+
 Login to the server and perform this step:
 
     export K3S_KUBECONFIG_MODE="644"
     curl -sfL https://get.k3s.io | sh -s - --no-deploy=traefik
 
-The on the client machine, get the Kubernetes config file:
+Then on the client machine, get the Kubernetes config file:
 
     scp <user>@<hostip>:/etc/rancher/k3s/k3s.yaml ~/.kube/config
     sed -i 's/127\.0\.0\.1/<your>\.<ip>\.<address>\.<here>/g' ~/.kube/config

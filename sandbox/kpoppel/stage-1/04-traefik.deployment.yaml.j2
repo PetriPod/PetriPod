@@ -66,6 +66,8 @@ spec:
             - --entrypoints.websecure.Address=:443
             - --entryPoints.websecure.http.tls
             - --entrypoints.websecure.http.tls.certResolver=default
+            # Skip certificate verfication on internal stuff. Skips internal man in the middle checks.
+            #- --insecureSkipVerify=true
             # Permanent redirecting of all requests on http (80) to https (443)
             #- --entrypoints.web.http.redirections.entryPoint.to=websecure
             # Where to get ingress information from
