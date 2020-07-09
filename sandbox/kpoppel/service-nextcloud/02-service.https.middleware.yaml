@@ -1,0 +1,11 @@
+---
+    apiVersion: traefik.containo.us/v1alpha1
+    kind: Middleware
+    metadata:
+      name: service-https-only
+      # Namespace 'default' must be appended in the IngressRoute to find the middleware in this namespace.
+      namespace: default
+    spec:
+      redirectScheme:
+        scheme: https
+    

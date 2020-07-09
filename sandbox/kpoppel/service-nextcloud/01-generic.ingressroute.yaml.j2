@@ -1,0 +1,23 @@
+# File: 01-{{SERVICENAME}}.ingressroute.yaml.j2
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: {{SERVICENAME}}-ingressroute-tls
+  namespace: {{NAMESPACE}}
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`{{SERVICENAME}}.{{DOMAIN}}`)
+      kind: Rule
+      services:
+        - name: {{SERVICENAME}}
+          port: {{SERVICEPORT}}
+      # Instead of middlewares, https redirect can also be set globally in the Traefik deployment YAML file.
+      # Here we get the middleware from the default namespace where it was created.
+      middlewares:
+      - name: service-https-only
+        namespace: default
+  tls:
+    certResolver: default
