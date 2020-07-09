@@ -22,7 +22,7 @@ fi
 sed 's#{{DATA_VOLUME}}#'${data_volume}'#g' 03-traefik.persistentvolumeclaim.yaml.j2 > 03-traefik.persistentvolumeclaim.yaml
 sed 's/{{ACME_EMAIL}}/'${acme_email}'/g' 04-traefik.deployment.yaml.j2 > 04-traefik.deployment.yaml
 sed 's/{{DOMAIN}}/'${domain}'/g' 06-traefik-admin.basic_auth.ingressroute.yaml.j2 > 06-traefik-admin.basic_auth.ingressroute.yaml
-sed 's/{{DOMAIN}}/'${domain}'/g' 11-whoami.ingressroute.yaml.j2 > 11-whoami.ingressroute.yaml
+sed 's/{{DOMAIN}}/'${domain}'/g' 21-whoami.ingressroute.yaml.j2 > 21-whoami.ingressroute.yaml
 
 
 read -n1 -p "Press a key to deploy"
@@ -37,8 +37,9 @@ kubectl apply \
     -f 04-traefik.deployment.yaml   \
     -f 05-basic_auth.admin.middleware.yaml  \
     -f 06-traefik-admin.basic_auth.ingressroute.yaml  \
-    -f 10-whoami.service.yaml       \
-    -f 11-whoami.ingressroute.yaml
+    -f 10-service.https.middleware.yaml       \
+    -f 20-whoami.service.yaml       \
+    -f 21-whoami.ingressroute.yaml
 
 read -n1 -p "Press a key to make basic tests"
 echo "#### Attempt whoami on http:"

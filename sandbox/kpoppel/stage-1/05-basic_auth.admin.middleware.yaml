@@ -13,10 +13,13 @@
 #  basicAuth:
 #    secret: traefik-admin
 
-# This stack of middlewares setup the following:
+# This stack of middlewares can setup the following:
 #   Only https - http requests are redirected to https
 #   Allow list of IPs - here only localhost or LAN IPs
 #   Basic Authentication using the system-admin secret setup in Kubernetes
+#
+# Af os July 2020 - Traefik 2 emits a go error with a nil pointer when using the 'system-secured' middleware chain
+# Use the individual middlewares instead.  See example in the Traefik 2 ingressroute yaml file.
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
