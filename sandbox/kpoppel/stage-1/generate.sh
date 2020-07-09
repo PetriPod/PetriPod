@@ -29,9 +29,12 @@ read -n1 -p "Press a key to deploy"
 htpasswd -b -c ../basic_auth_credentials $user $pass
 kubectl create secret generic system-admin --from-file ../basic_auth_credentials -n kube-system
 
+# Applying all the yaml files at once creates a race condition where CRDs are not stored before being used.
+# This is the reason there are two apply runs.
 kubectl apply \
     -f 00-klipperlb.daemonset.yaml  \
-    -f 01-traefik.crd.yaml          \
+    -f 01-traefik.crd.yaml
+kubectl apply \
     -f 02-traefik.clusterrole.yaml  \
     -f 03-traefik.persistentvolumeclaim.yaml   \
     -f 04-traefik.deployment.yaml   \
@@ -40,6 +43,9 @@ kubectl apply \
     -f 10-service.https.middleware.yaml       \
     -f 20-whoami.service.yaml       \
     -f 21-whoami.ingressroute.yaml
+
+echo "Observe deployment. Press <ctrl-c> when all is running and make a few tests."
+kubectl get pods -A -w
 
 read -n1 -p "Press a key to make basic tests"
 echo "#### Attempt whoami on http:"
