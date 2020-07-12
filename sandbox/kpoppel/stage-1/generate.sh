@@ -16,6 +16,7 @@ else
   echo "data_volume=$data_volume" >> ../config_data
 
   mkdir -p $data_volume
+  htpasswd -b -c ../basic_auth_credentials $user $pass
   chmod 600 ../basic_auth_credentials
 fi
 
@@ -26,7 +27,6 @@ sed 's/{{DOMAIN}}/'${domain}'/g' 21-whoami.ingressroute.yaml.j2 > 21-whoami.ingr
 
 
 read -n1 -p "Press a key to deploy"
-htpasswd -b -c ../basic_auth_credentials $user $pass
 kubectl create secret generic system-admin --from-file ../basic_auth_credentials -n kube-system
 
 # Applying all the yaml files at once creates a race condition where CRDs are not stored before being used.

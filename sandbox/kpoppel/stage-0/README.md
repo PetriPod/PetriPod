@@ -5,6 +5,9 @@ Login to the server and perform this step:
     export K3S_KUBECONFIG_MODE="644"
     curl -sfL https://get.k3s.io | sh -s - --no-deploy=traefik
 
+
+Ensure that `kubectl` and `helm` are installed on the machine where you run the scripts.
+
 Then on the client machine, get the Kubernetes config file:
 
     scp <user>@<hostip>:/etc/rancher/k3s/k3s.yaml ~/.kube/config
