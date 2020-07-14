@@ -18,7 +18,6 @@ Anyone is most welcome to begin a private conversation regarding community issue
 | Denis | denis.ev | petripod@evers.sh | AEST | **German**, **English** |
 | Kim | kpoppel |  | CEST | **Danish**, **English**, *Norwegian*, *Swedish* |
 | Evan | evanmn | evan+petri@mccarthy.mn | CST | **English**, **French** |
-| Dale | voryzen |  | AEST | **English**, *Spanish* |
 
 ## Disclaimer/ Notes
 
